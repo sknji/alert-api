@@ -5,20 +5,21 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/sknji/alert-api/internal/route/v1"
+	v1 "github.com/sknji/alert-api/internal/route/v1"
 	"log"
 	"net/http"
 )
 
-func StartHTTPServer(ctx context.Context, r *chi.Mux, port int) error {
-	addMiddlewares(r)
+func StartHTTPServer(ctx context.Context, mux *chi.Mux, port string) error {
+	addMiddlewares(mux)
+	registerV1Routes(ctx, mux)
 
-	r.Route("/v1", func(r chi.Router) {
-		v1.RegisterRoutes(ctx, r)
-	})
+	log.Printf("HTTP Server running at port %s", port)
+	return http.ListenAndServe(fmt.Sprintf(":%s", port), mux)
+}
 
-	log.Printf("HTTP Server running at port %d", port)
-	return http.ListenAndServe(fmt.Sprintf(":%d", port), r)
+func registerV1Routes(ctx context.Context, mux *chi.Mux) {
+	mux.Route("/v1", v1.RegisterRoutes(ctx))
 }
 
 func addMiddlewares(r *chi.Mux) {

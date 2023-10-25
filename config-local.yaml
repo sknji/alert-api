@@ -1,0 +1,9 @@
+port: 8080
+database:
+  host: localhost
+  user: <user>
+  password: <password>
+  database: alert
+  provider: sqlite
+  auto_migrate: true
+  logging: true

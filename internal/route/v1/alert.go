@@ -13,18 +13,18 @@ import (
 
 type alertResource struct{}
 
-func RegisterAlert(ctx context.Context) http.Handler {
+func RegisterAlertRoutes(ctx context.Context) http.Handler {
 	r := chi.NewRouter()
 	ar := &alertResource{}
-	r.Post("/", ar.post(ctx))
 	r.Get("/", ar.search(ctx))
 	r.Get("/{alertID}", ar.get(ctx))
+	r.Post("/", ar.post(ctx))
 	return r
 }
 
 func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var alert models.Alert
+		var alert models.AlertRequest
 
 		err := json.NewDecoder(r.Body).Decode(&alert)
 		if err != nil {
@@ -32,9 +32,9 @@ func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r 
 			return
 		}
 
-		err = service.Storage(ctx).Save(&alert)
-		if err != nil {
-			_ = render.Render(w, r, models.ErrorInternalServerError(alert.AlertId, err))
+		errResp := service.AlertService(ctx).CreateAlert(ctx, &alert)
+		if errResp != nil {
+			_ = render.Render(w, r, errResp)
 			return
 		}
 
@@ -47,9 +47,9 @@ func (ar alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *
 		alertId := chi.URLParam(r, "alertID")
 		log.Println("alertID received:", alertId)
 
-		alert, err := service.Storage(ctx).Get(alertId)
-		if err != nil {
-			_ = render.Render(w, r, models.ErrorNotFound(alertId, err))
+		alert, errResp := service.AlertService(ctx).FetchAlert(ctx, alertId)
+		if errResp != nil {
+			_ = render.Render(w, r, errResp)
 			return
 		}
 
@@ -59,15 +59,15 @@ func (ar alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *
 
 func (ar alertResource) search(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-		serviceId := r.URL.Query().Get("service_id")
 		startTs := r.URL.Query().Get("start_ts")
 		endTs := r.URL.Query().Get("end_ts")
+		serviceId := r.URL.Query().Get("service_id")
 
 		log.Printf("service_id:%s, start_ts:%s, end_ts:%s", serviceId, startTs, endTs)
 
-		alerts, err := service.Storage(ctx).Search(serviceId, startTs, endTs)
-		if err != nil {
-			_ = render.Render(w, r, models.ErrorNotFoundSearch(err))
+		alerts, errResp := service.AlertService(ctx).SearchServiceAlerts(ctx, serviceId, startTs, endTs)
+		if errResp != nil {
+			_ = render.Render(w, r, errResp)
 			return
 		}
 

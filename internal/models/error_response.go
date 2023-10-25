@@ -17,6 +17,10 @@ func (e *ErrorResponse) Render(w http.ResponseWriter, r *http.Request) error {
 }
 
 func ErrorInternalServerError(alertId string, err error) *ErrorResponse {
+	if err == nil {
+		return nil
+	}
+
 	msg := err.Error()
 	return &ErrorResponse{
 		AlertId:    alertId,
@@ -26,6 +30,10 @@ func ErrorInternalServerError(alertId string, err error) *ErrorResponse {
 }
 
 func ErrorInvalidRequest(alertId string, err error) *ErrorResponse {
+	if err == nil {
+		return nil
+	}
+
 	msg := err.Error()
 	return &ErrorResponse{
 		AlertId:    alertId,
@@ -35,17 +43,13 @@ func ErrorInvalidRequest(alertId string, err error) *ErrorResponse {
 }
 
 func ErrorNotFound(alertId string, err error) *ErrorResponse {
+	if err == nil {
+		return nil
+	}
+
 	msg := err.Error()
 	return &ErrorResponse{
 		AlertId:    alertId,
-		Error:      msg,
-		StatusCode: http.StatusNotFound,
-	}
-}
-
-func ErrorNotFoundSearch(err error) *ErrorResponse {
-	msg := err.Error()
-	return &ErrorResponse{
 		Error:      msg,
 		StatusCode: http.StatusNotFound,
 	}
