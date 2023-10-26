@@ -21,7 +21,6 @@ func NewDatabaseStorage(conf *database.Config) (*DatabaseStorage, error) {
 	if conf.AutoMigrate {
 		_ = db.AutoMigrate(models.Alert{}, models.Service{})
 	}
-
 	return &DatabaseStorage{handle: db}, nil
 }
 

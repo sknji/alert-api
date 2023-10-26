@@ -34,7 +34,6 @@ func (s *Service) AddAlert(alert *Alert) {
 			return
 		}
 	}
-
 	s.Alerts = append(s.Alerts, alert)
 }
 

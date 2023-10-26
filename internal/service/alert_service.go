@@ -62,7 +62,6 @@ func (asi *AlertServiceImpl) FetchAlert(
 		}
 		return nil, models.ErrorInternalServerError(alertId, err)
 	}
-
 	return alert, nil
 }
 
@@ -83,7 +82,6 @@ func (asi *AlertServiceImpl) SearchServiceAlerts(
 	}
 
 	serv.SetAlerts(alerts...)
-
 	return serv, nil
 }
 

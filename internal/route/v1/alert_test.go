@@ -8,6 +8,7 @@ import (
 	"github.com/sknji/alert-api/internal/persist"
 	"github.com/sknji/alert-api/internal/service"
 	"github.com/stretchr/testify/assert"
+
 	"log"
 	"net/http"
 	"net/http/httptest"

@@ -37,7 +37,6 @@ func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r 
 			_ = render.Render(w, r, errResp)
 			return
 		}
-
 		render.Status(r, http.StatusOK)
 	}
 }
@@ -52,7 +51,6 @@ func (ar alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *
 			_ = render.Render(w, r, errResp)
 			return
 		}
-
 		_ = render.Render(w, r, alert)
 	}
 }
@@ -70,7 +68,6 @@ func (ar alertResource) search(ctx context.Context) func(w http.ResponseWriter, 
 			_ = render.Render(w, r, errResp)
 			return
 		}
-
 		_ = render.Render(w, r, alerts)
 	}
 }
