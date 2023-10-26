@@ -48,12 +48,21 @@ func helperContext() context.Context {
 func TestAlertsRoute_PostAlert_Success_1(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/", bytes.NewBuffer(createAlertBody))
 	resp := execute(req)
+	respBody := make(map[string]string)
+	err := json.NewDecoder(resp.Body).Decode(&respBody)
+	assert.Nil(t, err)
+	assert.Equal(t, alertId, respBody["alert_id"])
 	assert.Equal(t, http.StatusOK, resp.Code, "no content success response expected")
 }
 
 func TestAlertsRoute_PostAlert_Failed_1(t *testing.T) {
 	req, _ := http.NewRequest("POST", "/", bytes.NewBuffer(createAlertBody))
 	resp := execute(req)
+	respBody := make(map[string]string)
+	err := json.NewDecoder(resp.Body).Decode(&respBody)
+	assert.Nil(t, err)
+	assert.Equal(t, alertId, respBody["alert_id"])
+	assert.Equal(t, "alert record exist", respBody["error"])
 	assert.Equal(t, http.StatusBadRequest, resp.Code, "cannot add since alert already exist")
 }
 
@@ -64,7 +73,7 @@ func TestAlertsRoute_GetAlert_Success_2(t *testing.T) {
 	var alert models.Alert
 	err := json.NewDecoder(resp.Body).Decode(&alert)
 
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, "my_test_service_id_2", alert.ServiceId)
 	assert.Equal(t, http.StatusOK, resp.Code, "alert record should be saved from prev test")
 }
@@ -83,7 +92,7 @@ func TestAlertsRoute_GetAlertService_Success_4(t *testing.T) {
 	var serv models.Service
 	err := json.NewDecoder(resp.Body).Decode(&serv)
 
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, "my_test_service_id_2", serv.ServiceId)
 	assert.Equal(t, "my_test_service", serv.ServiceName)
 	assert.Equal(t, 1, len(serv.Alerts))
@@ -99,7 +108,7 @@ func TestAlertsRoute_GetAlertService_Failed_5(t *testing.T) {
 	err := json.NewDecoder(resp.Body).Decode(&errResp)
 
 	log.Infoln(errResp)
-	assert.Equal(t, nil, err)
+	assert.Nil(t, err)
 	assert.Equal(t, service.ErrSearchResultNotFound.Error(), errResp["error"])
 	assert.Equal(t, http.StatusNotFound, resp.Code, "alert record should not exist for invalid service id")
 }

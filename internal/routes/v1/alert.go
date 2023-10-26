@@ -22,7 +22,7 @@ func RegisterAlertRoutes(ctx context.Context) http.Handler {
 	return r
 }
 
-func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
+func (ar *alertResource) post(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		var alert models.AlertRequest
 
@@ -42,7 +42,7 @@ func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r 
 	}
 }
 
-func (ar alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
+func (ar *alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		alertId := chi.URLParam(r, "alertID")
 		log.Infoln("alertID received:", alertId)
@@ -56,7 +56,7 @@ func (ar alertResource) get(ctx context.Context) func(w http.ResponseWriter, r *
 	}
 }
 
-func (ar alertResource) search(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
+func (ar *alertResource) search(ctx context.Context) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		startTs := r.URL.Query().Get("start_ts")
 		endTs := r.URL.Query().Get("end_ts")
