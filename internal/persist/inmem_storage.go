@@ -1,8 +1,8 @@
 package persist
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/sknji/alert-api/internal/models"
-	"log"
 )
 
 type InMemoryStorage struct {
@@ -18,13 +18,13 @@ func NewInMemoryStorage() *InMemoryStorage {
 }
 
 func (ims *InMemoryStorage) SaveService(serv *models.Service) error {
-	log.Println("InMemoryStorage saving Service", serv)
+	log.Infoln("InMemoryStorage saving Service", serv)
 	ims.services[serv.ServiceId] = serv
 	return nil
 }
 
 func (ims *InMemoryStorage) GetService(serviceId string) (serv *models.Service, err error) {
-	log.Println("InMemoryStorage fetching Service", serviceId)
+	log.Infoln("InMemoryStorage fetching Service", serviceId)
 	serv, ok := ims.services[serviceId]
 	if !ok {
 		return nil, ErrEntityNotFound
@@ -33,19 +33,19 @@ func (ims *InMemoryStorage) GetService(serviceId string) (serv *models.Service, 
 }
 
 func (ims *InMemoryStorage) SaveAlert(alert *models.Alert) error {
-	log.Println("InMemoryStorage saving Alert", alert)
+	log.Infoln("InMemoryStorage saving Alert", alert)
 	ims.alerts[alert.AlertId] = alert
 	return nil
 }
 func (ims *InMemoryStorage) SaveAlerts(alerts []*models.Alert) error {
-	log.Println("InMemoryStorage saving Alerts", alerts)
+	log.Infoln("InMemoryStorage saving Alerts", alerts)
 	for _, alert := range alerts {
 		ims.alerts[alert.AlertId] = alert
 	}
 	return nil
 }
 func (ims *InMemoryStorage) GetAlert(alertId string) (alert *models.Alert, err error) {
-	log.Println("InMemoryStorage fetching Alert", alertId)
+	log.Infoln("InMemoryStorage fetching Alert", alertId)
 	alert, ok := ims.alerts[alertId]
 	if !ok {
 		return nil, ErrEntityNotFound
@@ -54,7 +54,7 @@ func (ims *InMemoryStorage) GetAlert(alertId string) (alert *models.Alert, err e
 }
 
 func (ims *InMemoryStorage) FindAlerts(serviceId, startTs, endTs string) (alerts []*models.Alert, err error) {
-	log.Println("InMemoryStorage Searching service alerts", serviceId, startTs, endTs)
+	log.Infoln("InMemoryStorage Searching service alerts", serviceId, startTs, endTs)
 	for _, alert := range ims.alerts {
 		if alert.ServiceId != serviceId {
 			continue

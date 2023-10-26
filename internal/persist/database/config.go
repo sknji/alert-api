@@ -10,14 +10,14 @@ import (
 )
 
 type Config struct {
-	User        string       `json:"user"`
-	Password    string       `json:"password"`
-	Host        string       `json:"host"`
-	Port        string       `json:"port"`
-	Database    string       `json:"database"`
-	AutoMigrate bool         `json:"auto_migrate"`
-	Logging     bool         `json:"logging"`
-	Provider    ProviderType `json:"provider"`
+	User     string       `json:"user"`
+	Password string       `json:"password"`
+	Host     string       `json:"host"`
+	Port     string       `json:"port"`
+	Database string       `json:"database"`
+	Migrate  bool         `json:"migrate"`
+	Logging  bool         `json:"logging"`
+	Provider ProviderType `json:"provider"`
 }
 
 type ProviderType string

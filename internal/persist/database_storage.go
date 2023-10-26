@@ -2,10 +2,10 @@ package persist
 
 import (
 	"errors"
+	log "github.com/sirupsen/logrus"
 	"github.com/sknji/alert-api/internal/models"
 	"github.com/sknji/alert-api/internal/persist/database"
 	"gorm.io/gorm"
-	"log"
 )
 
 type DatabaseStorage struct {
@@ -18,20 +18,23 @@ func NewDatabaseStorage(conf *database.Config) (*DatabaseStorage, error) {
 		return nil, err
 	}
 
-	if conf.AutoMigrate {
-		_ = db.AutoMigrate(models.Alert{}, models.Service{})
+	if conf.Migrate {
+		err = db.AutoMigrate(models.Alert{}, models.Service{})
+		if err != nil {
+			log.Error(err)
+		}
 	}
 	return &DatabaseStorage{handle: db}, nil
 }
 
 func (db *DatabaseStorage) SaveService(serv *models.Service) error {
-	log.Println("DatabaseStorage Saving alert", serv)
-	gormResult := db.handle.Model(models.Service{}).Save(serv)
+	log.Infoln("DatabaseStorage Saving alert", serv)
+	gormResult := db.handle.Model(models.Service{}).Create(serv)
 	return StandardError(gormResult.Error)
 }
 
 func (db *DatabaseStorage) GetService(serviceId string) (*models.Service, error) {
-	log.Println("DatabaseStorage Fetching alert", serviceId)
+	log.Infoln("DatabaseStorage Fetching alert", serviceId)
 	var serv models.Service
 	gormResult := db.handle.Model(models.Service{}).
 		Where("service_id = ?", serviceId).First(&serv)
@@ -39,19 +42,19 @@ func (db *DatabaseStorage) GetService(serviceId string) (*models.Service, error)
 }
 
 func (db *DatabaseStorage) SaveAlert(alert *models.Alert) error {
-	log.Println("DatabaseStorage Saving alert", alert)
+	log.Infoln("DatabaseStorage Saving alert", alert)
 	gormResult := db.handle.Model(models.Alert{}).Create(alert)
 	return StandardError(gormResult.Error)
 }
 
 func (db *DatabaseStorage) SaveAlerts(alerts []*models.Alert) error {
-	log.Println("DatabaseStorage Saving alert", alerts)
+	log.Infoln("DatabaseStorage Saving alert", alerts)
 	gormResult := db.handle.Model(models.Alert{}).Create(alerts)
 	return StandardError(gormResult.Error)
 }
 
 func (db *DatabaseStorage) GetAlert(alertId string) (*models.Alert, error) {
-	log.Println("DatabaseStorage Fetching alert", alertId)
+	log.Infoln("DatabaseStorage Fetching alert", alertId)
 	var alert models.Alert
 	gormResult := db.handle.Model(models.Alert{}).
 		Where("alert_id = ?", alertId).First(&alert)
@@ -59,7 +62,7 @@ func (db *DatabaseStorage) GetAlert(alertId string) (*models.Alert, error) {
 }
 
 func (db *DatabaseStorage) FindAlerts(serviceId, startTs, endTs string) ([]*models.Alert, error) {
-	log.Println("DatabaseStorage Searching service alerts", serviceId, startTs, endTs)
+	log.Infoln("DatabaseStorage Searching service alerts", serviceId, startTs, endTs)
 	gormResult := db.handle.Model(models.Alert{})
 	if serviceId != "" {
 		gormResult = gormResult.Where("service_id = ?", serviceId)

@@ -9,7 +9,7 @@ import (
 	"github.com/sknji/alert-api/internal/service"
 	"github.com/stretchr/testify/assert"
 
-	"log"
+	log "github.com/sirupsen/logrus"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -98,7 +98,7 @@ func TestAlertsRoute_GetAlertService_Failed_5(t *testing.T) {
 	errResp := make(map[string]string)
 	err := json.NewDecoder(resp.Body).Decode(&errResp)
 
-	log.Println(errResp)
+	log.Infoln(errResp)
 	assert.Equal(t, nil, err)
 	assert.Equal(t, service.ErrSearchResultNotFound.Error(), errResp["error"])
 	assert.Equal(t, http.StatusNotFound, resp.Code, "alert record should not exist for invalid service id")

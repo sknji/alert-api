@@ -1,8 +1,8 @@
 package persist
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/sknji/alert-api/internal/models"
-	"log"
 )
 
 type DummyStorage struct {
@@ -13,29 +13,29 @@ func NewDummyStore() *DummyStorage {
 }
 
 func (ds *DummyStorage) SaveService(serv *models.Service) error {
-	log.Println("DummyStorage saving Service", serv)
+	log.Infoln("DummyStorage saving Service", serv)
 	return nil
 }
 
 func (ds *DummyStorage) GetService(serviceId string) (serv *models.Service, err error) {
-	log.Println("DummyStorage fetching Service", serv)
+	log.Infoln("DummyStorage fetching Service", serv)
 	return nil, ErrEntityNotFound
 }
 
 func (ds *DummyStorage) SaveAlert(alert *models.Alert) error {
-	log.Println("DummyStorage saving Alert", alert)
+	log.Infoln("DummyStorage saving Alert", alert)
 	return nil
 }
 func (ds *DummyStorage) SaveAlerts(alerts []*models.Alert) error {
-	log.Println("DummyStorage saving Alerts", alerts)
+	log.Infoln("DummyStorage saving Alerts", alerts)
 	return nil
 }
 func (ds *DummyStorage) GetAlert(alertId string) (alert *models.Alert, err error) {
-	log.Println("DummyStorage fetching Alert", alertId)
+	log.Infoln("DummyStorage fetching Alert", alertId)
 	return nil, ErrEntityNotFound
 }
 
 func (ds *DummyStorage) FindAlerts(serviceId, startTs, endTs string) (alerts []*models.Alert, err error) {
-	log.Println("DummyStorage Searching service alerts", serviceId, startTs, endTs)
+	log.Infoln("DummyStorage Searching service alerts", serviceId, startTs, endTs)
 	return nil, ErrEntityNotFound
 }

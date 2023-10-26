@@ -5,5 +5,5 @@ database:
   password: <password>
   database: alert
   provider: sqlite
-  auto_migrate: true
+  migrate: true
   logging: true

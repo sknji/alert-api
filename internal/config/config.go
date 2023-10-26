@@ -1,9 +1,9 @@
 package config
 
 import (
+	log "github.com/sirupsen/logrus"
 	"github.com/sknji/alert-api/internal/persist/database"
 	"github.com/spf13/viper"
-	"log"
 )
 
 type Configuration struct {
@@ -13,7 +13,7 @@ type Configuration struct {
 
 // LoadConfigs loads the application configurations from a local file
 func LoadConfigs(configFile string) (conf Configuration, err error) {
-	log.Println("Loading config file", configFile)
+	log.Infoln("Loading config file", configFile)
 	viper.SetConfigName(configFile)
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath(".")

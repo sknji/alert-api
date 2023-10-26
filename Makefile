@@ -4,7 +4,7 @@ fmt:
 	@go fmt ./...
 
 clean:
-	@rm -f alert-api
+	@rm -f alert-api *.db
 
 deps:
 	@go mod download

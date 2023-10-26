@@ -4,12 +4,18 @@ import (
 	"context"
 	"flag"
 	"github.com/go-chi/chi/v5"
+	log "github.com/sirupsen/logrus"
 	"github.com/sknji/alert-api/internal/config"
 	"github.com/sknji/alert-api/internal/persist"
 	"github.com/sknji/alert-api/internal/server"
 	"github.com/sknji/alert-api/internal/service"
-	"log"
 )
+
+func init() {
+	log.SetFormatter(&log.TextFormatter{
+		FullTimestamp: true,
+	})
+}
 
 // LoadServices will setup all the services required to by the API including database setup, and alert service
 func LoadServices(ctx context.Context, conf config.Configuration) context.Context {

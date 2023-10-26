@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	log "github.com/sirupsen/logrus"
 	v1 "github.com/sknji/alert-api/internal/routes/v1"
-	"log"
 	"net/http"
 )
 
@@ -14,7 +14,7 @@ func StartHTTPServer(ctx context.Context, mux *chi.Mux, port string) error {
 	addMiddlewares(mux)
 	registerV1Routes(ctx, mux)
 
-	log.Printf("HTTP Server running at port %s", port)
+	log.Infof("HTTP Server running at port %s\n", port)
 	return http.ListenAndServe(fmt.Sprintf(":%s", port), mux)
 }
 
