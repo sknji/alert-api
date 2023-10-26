@@ -85,6 +85,5 @@ func StandardError(err error) error {
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return ErrEntityNotFound
 	}
-
 	return err
 }

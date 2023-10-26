@@ -35,10 +35,10 @@ func (asi *AlertServiceImpl) CreateAlert(
 	serv := asi.ValidateNormalizeAlertReq(alert)
 
 	_, err := Storage(ctx).GetService(serv.ServiceId)
+	if errors.Is(err, persist.ErrEntityNotFound) {
+		err = Storage(ctx).SaveService(serv)
+	}
 	if err != nil {
-		if errors.Is(err, persist.ErrEntityNotFound) {
-			err = Storage(ctx).SaveService(serv)
-		}
 		return models.ErrorInternalServerError(alert.AlertId, err)
 	}
 

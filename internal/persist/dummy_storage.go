@@ -5,37 +5,37 @@ import (
 	"log"
 )
 
-type DummyStore struct {
+type DummyStorage struct {
 }
 
-func NewDummyStore() (*DummyStore, error) {
-	return &DummyStore{}, nil
+func NewDummyStore() *DummyStorage {
+	return &DummyStorage{}
 }
 
-func (DummyStore) SaveService(serv *models.Service) error {
-	log.Println("DummyStore saving Service", serv)
+func (ds *DummyStorage) SaveService(serv *models.Service) error {
+	log.Println("DummyStorage saving Service", serv)
 	return nil
 }
 
-func (DummyStore) GetService(serviceId string) (serv *models.Service, err error) {
-	log.Println("DummyStore fetching Service", serv)
+func (ds *DummyStorage) GetService(serviceId string) (serv *models.Service, err error) {
+	log.Println("DummyStorage fetching Service", serv)
 	return nil, ErrEntityNotFound
 }
 
-func (DummyStore) SaveAlert(alert *models.Alert) error {
-	log.Println("DummyStore saving Alert", alert)
+func (ds *DummyStorage) SaveAlert(alert *models.Alert) error {
+	log.Println("DummyStorage saving Alert", alert)
 	return nil
 }
-func (DummyStore) SaveAlerts(alerts []*models.Alert) error {
-	log.Println("DummyStore saving Alerts", alerts)
+func (ds *DummyStorage) SaveAlerts(alerts []*models.Alert) error {
+	log.Println("DummyStorage saving Alerts", alerts)
 	return nil
 }
-func (DummyStore) GetAlert(alertId string) (alert *models.Alert, err error) {
-	log.Println("DummyStore fetching Alert", alertId)
+func (ds *DummyStorage) GetAlert(alertId string) (alert *models.Alert, err error) {
+	log.Println("DummyStorage fetching Alert", alertId)
 	return nil, ErrEntityNotFound
 }
 
-func (DummyStore) FindAlerts(serviceId, startTs, endTs string) (alerts []*models.Alert, err error) {
-	log.Println("DummyStore Searching service alerts", serviceId, startTs, endTs)
+func (ds *DummyStorage) FindAlerts(serviceId, startTs, endTs string) (alerts []*models.Alert, err error) {
+	log.Println("DummyStorage Searching service alerts", serviceId, startTs, endTs)
 	return nil, ErrEntityNotFound
 }

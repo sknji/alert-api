@@ -38,7 +38,7 @@ func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r 
 			return
 		}
 
-		render.Status(r, http.StatusNoContent)
+		render.Status(r, http.StatusOK)
 	}
 }
 

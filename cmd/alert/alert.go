@@ -34,7 +34,6 @@ func main() {
 	ctx := LoadServices(context.Background(), conf)
 
 	r := chi.NewRouter()
-
 	if err := server.StartHTTPServer(ctx, r, conf.Port); err != nil {
 		log.Panicln(err)
 	}
