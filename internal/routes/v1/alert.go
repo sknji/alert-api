@@ -31,6 +31,7 @@ func (ar alertResource) post(ctx context.Context) func(w http.ResponseWriter, r 
 			_ = render.Render(w, r, models.ErrorInvalidRequest(alert.AlertId, err))
 			return
 		}
+		_ = r.Body.Close()
 
 		errResp := service.AlertService(ctx).CreateAlert(ctx, &alert)
 		if errResp != nil {
