@@ -11,7 +11,9 @@ import (
 	"log"
 )
 
+// LoadServices will setup all the services required to by the API including database setup, and alert service
 func LoadServices(ctx context.Context, conf config.Configuration) context.Context {
+	// Initialize a new database
 	db, err := persist.NewDatabaseStorage(&conf.Database)
 	if err != nil {
 		log.Panicln(err)

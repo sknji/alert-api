@@ -13,7 +13,7 @@ test:
 	@go test -v ./...
 
 build: fmt clean deps
-	@go build -o alert-api cmd/alert/alert.go
+	@go build -o alert-api cmd/alert/main.go
 
 run: build
 	@./alert-api

@@ -7,6 +7,7 @@ import (
 	"github.com/sknji/alert-api/internal/persist"
 )
 
+// AlertServiceI defines an interface that all alert service implementation should define.
 type AlertServiceI interface {
 	CreateAlert(ctx context.Context, m *models.AlertRequest) *models.ErrorResponse
 	FetchAlert(ctx context.Context, alertId string) (*models.Alert, *models.ErrorResponse)
@@ -19,6 +20,8 @@ var ErrAlertExist = errors.New("alert record exist")
 
 type AlertServiceImpl struct{}
 
+// ValidateNormalizeAlertReq takes a alert request sent from the caller and normalizes the data to an internal
+// representation that can be processed by the service. Data validation would happen in this method
 func (asi *AlertServiceImpl) ValidateNormalizeAlertReq(req *models.AlertRequest) *models.Service {
 	var serv models.Service
 	serv.ServiceId = req.ServiceId
@@ -30,6 +33,9 @@ func (asi *AlertServiceImpl) ValidateNormalizeAlertReq(req *models.AlertRequest)
 	return &serv
 }
 
+// CreateAlert takes a context, an alert request and performs check if the alert service and alert already added
+// to the storage system. If they don't exist in the storage system, new records are added. If an alert already
+// exists, an error is returned
 func (asi *AlertServiceImpl) CreateAlert(
 	ctx context.Context, alert *models.AlertRequest) *models.ErrorResponse {
 	serv := asi.ValidateNormalizeAlertReq(alert)
@@ -53,6 +59,7 @@ func (asi *AlertServiceImpl) CreateAlert(
 	return models.ErrorInternalServerError(alert.AlertId, err)
 }
 
+// FetchAlert takes a context, alertId and retrieves the alert record from the storage system
 func (asi *AlertServiceImpl) FetchAlert(
 	ctx context.Context, alertId string) (*models.Alert, *models.ErrorResponse) {
 	alert, err := Storage(ctx).GetAlert(alertId)
@@ -65,6 +72,8 @@ func (asi *AlertServiceImpl) FetchAlert(
 	return alert, nil
 }
 
+// SearchServiceAlerts takes a context, searchId, start timestamp and end timestamp. The method will search
+// for alert records using the passed filter parameters.
 func (asi *AlertServiceImpl) SearchServiceAlerts(
 	ctx context.Context, serviceId string, startTs string, endTs string) (*models.Service, *models.ErrorResponse) {
 	serv, err := Storage(ctx).GetService(serviceId)
@@ -77,6 +86,7 @@ func (asi *AlertServiceImpl) SearchServiceAlerts(
 		return nil, searchError(err)
 	}
 
+	// If no alerts found, return not found error and not an empty response.
 	if len(alerts) == 0 {
 		return nil, searchError(ErrSearchResultNotFound)
 	}

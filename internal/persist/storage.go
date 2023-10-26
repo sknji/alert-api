@@ -5,6 +5,7 @@ import (
 	"github.com/sknji/alert-api/internal/models"
 )
 
+// Store defines an interfaces that requires all storage systems to implement
 type Store interface {
 	GetService(serviceId string) (serv *models.Service, err error)
 	SaveService(serv *models.Service) error

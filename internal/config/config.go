@@ -11,6 +11,7 @@ type Configuration struct {
 	Database database.Config `json:"database"`
 }
 
+// LoadConfigs loads the application configurations from a local file
 func LoadConfigs(configFile string) (conf Configuration, err error) {
 	log.Println("Loading config file", configFile)
 	viper.SetConfigName(configFile)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	v1 "github.com/sknji/alert-api/internal/route/v1"
+	v1 "github.com/sknji/alert-api/internal/routes/v1"
 	"log"
 	"net/http"
 )
